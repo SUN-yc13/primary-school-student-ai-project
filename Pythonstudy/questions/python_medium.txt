@@ -1,0 +1,34 @@
+# ==============================================================================
+# Python 中级题库 (medium)
+# 格式：难度|题目|选项A|选项B|选项C|选项D|正确答案(A/B/C/D)
+# ==============================================================================
+medium|Python 中字符串不可变，以下哪个操作会报错？|s = "abc"; s = s + "d"|s = "abc"; s[0] = "x"|s = "abc"; s.upper()|s = "abc"; len(s)|B
+medium|以下哪个装饰器用于定义静态方法？|@staticmethod|@static|@classmethod|@static_method|A
+medium|Python 中 lambda 表达式的特点是？|可包含多条语句|匿名函数，只能一个表达式|必须命名|不能有参数|B
+medium|以下哪个模块用于正则表达式？|re|regex|regular|pattern|A
+medium|with open("file.txt") as f: 的主要好处是？|读取更快|自动关闭文件|支持二进制|加密文件|B
+medium|Python 中创建虚拟环境的命令是？|python -m venv env|python create env|python venv create|python env new|A
+medium|列表推导式 [x*2 for x in range(3)] 的结果是？|[0,1,2]|[0,2,4]|[2,4,6]|报错|B
+medium|以下哪个方法可以合并两个字典（Python 3.9+）？|dict1 + dict2|使用竖线运算符合并|dict1.merge(dict2)|merge(dict1,dict2)|B
+medium|Python 中 *args 的作用是？|接收任意数量关键字参数|接收任意数量位置参数|接收一个元组参数|接收一个字典参数|B
+medium|Python 中 **kwargs 的作用是？|接收任意数量位置参数|接收任意数量关键字参数|接收一个列表参数|接收一个集合参数|B
+medium|表达式 sorted([3,1,2], reverse=True) 的结果是？|[1,2,3]|[3,2,1]|[3,1,2]|报错|B
+medium|以下哪个是生成器表达式的写法？|[x for x in range(3)]|(x for x in range(3))|{x for x in range(3)}|<x for x in range(3)>|B
+medium|Python 中装饰器的本质是？|一个类|一个接收函数并返回函数的高阶函数|一个内置函数|一个语法错误|B
+medium|以下哪个方法可以将列表元素连接成字符串？|join()|concat()|merge()|combine()|A
+medium|Python 中深拷贝使用哪个函数？|copy.copy()|copy.deepcopy()|copy()|clone()|B
+medium|表达式 "a,b,c".split(",") 的结果是？|"abc"|['a','b','c']|['a,b,c']|报错|B
+medium|以下哪个关键字用于在函数中生成迭代器值？|return|yield|produce|emit|B
+medium|Python 中 type(None) 的输出是？|<class 'None'>|<class 'NoneType'>|None|<class 'null'>|B
+medium|字典 d = {"a":1,"b":2}，list(d.keys()) 的结果是？|['a','b']|[1,2]|[('a',1),('b',2)]|报错|A
+medium|以下哪个方法可以移除字符串首尾空白？|strip()|trim()|clean()|remove_space()|A
+medium|Python 中 == 和 is 的区别是？|没有区别|==比较值，is比较内存地址|==比较地址，is比较值|is只能比较数字|B
+medium|表达式 list(map(str, [1,2,3])) 的结果是？|[1,2,3]|['1','2','3']|'123'|报错|B
+medium|以下哪个是 Python 的包管理工具？|npm|pip|gem|apt|B
+medium|Python 中 if __name__ == "__main__" 的作用是？|定义主函数|脚本直接运行时执行该块|导入模块时执行该块|声明程序入口|B
+medium|异常处理中 else 子句在什么情况下执行？|发生异常时|没有发生异常时|无论是否异常都执行|finally 之后|B
+medium|以下哪个方法可以按索引插入元素到列表？|append()|insert()|add()|put()|B
+medium|Python 中全局变量在函数内修改需要什么关键字？|global|static|extern|public|A
+medium|表达式 {x: x**2 for x in range(3)} 的结果是？|{0:0,1:1,2:4}|[0,1,4]|{0,1,4}|报错|A
+medium|以下哪个模块用于处理 JSON 数据？|json|csv|xml|yaml|A
+medium|Python 中 os.path.join("a","b") 的结果（Windows）？|a/b|a\b|a+b|ab|B

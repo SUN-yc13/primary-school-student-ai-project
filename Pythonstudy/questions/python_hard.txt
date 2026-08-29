@@ -1,0 +1,34 @@
+# ==============================================================================
+# Python 高级题库 (hard)
+# 格式：难度|题目|选项A|选项B|选项C|选项D|正确答案(A/B/C/D)
+# ==============================================================================
+hard|Python 中 GIL（全局解释器锁）的主要影响是？|多进程无法并行|多线程 CPU 密集型任务无法真正并行|单线程变慢|内存泄漏|B
+hard|以下哪个是 Python 的元类（metaclass）默认值？|object|type|class|metaclass|B
+hard|Python 中 __slots__ 的主要作用是？|限制实例属性，节省内存|定义类方法|控制继承|实现迭代器|A
+hard|表达式 (lambda x: x**2)(5) 的结果是？|10|25|5|报错|B
+hard|Python 中上下文管理器协议需要实现哪两个方法？|__enter__ 和 __exit__|__start__ 和 __end__|__open__ 和 __close__|__begin__ 和 __finish__|A
+hard|以下哪个是 asyncio 中创建协程任务的正确方式？|asyncio.create_task(coro())|asyncio.run(coro())|asyncio.gather()|以上都可以，视场景而定|D
+hard|Python 中描述符（descriptor）协议涉及哪些方法？|__get__/__set__/__delete__|__read__/__write__|__access__/__assign__|__fetch__/__store__|A
+hard|表达式 int("1010", 2) 的结果是？|1010|10|2|报错|B
+hard|Python 中 collections.defaultdict 的作用是？|字典按插入顺序排序|访问不存在的键时自动创建默认值|字典键唯一|限制字典大小|B
+hard|以下哪个方法可以实现对象的可迭代协议？|__iter__ 和 __next__|__loop__ 和 __next__|__each__ 和 __item__|__for__ 和 __in__|A
+hard|Python 中 functools.lru_cache 的作用是？|日志记录|函数结果缓存（最近最少使用）|异步调用|类型检查|B
+hard|表达式 bytes([72,101,108,108,111]).decode() 的结果是？|报错|"Hello"|[72,101,108,108,111]|"72,101,108,108,111"|B
+hard|Python 中 threading.Lock 和 multiprocessing.Lock 的区别？|没有区别|前者线程间共享，后者进程间共享|前者更快|后者不能用|B
+hard|以下哪个是 Python 中实现单例模式的常见方式？|使用模块级变量|使用 __new__|使用装饰器|以上都是|D
+hard|Python 中 weakref 的主要用途是？|创建弱引用，不阻止对象被垃圾回收|创建空指针|复制对象|序列化对象|A
+hard|表达式 [x for x in range(10) if x % 2 == 0] 的结果是？|[0,2,4,6,8]|[1,3,5,7,9]|[0,1,2,3,4,5,6,7,8,9]|报错|A
+hard|Python 中 abc 模块的作用是？|异步编程|定义抽象基类|数据库连接|音频处理|B
+hard|以下哪个是 Python 3.10+ 的结构化模式匹配语法？|switch case|match case|if elif|when then|B
+hard|Python 中 memoryview 的作用是？|查看内存使用|在不复制的情况下操作二进制数据|内存泄漏检测|虚拟内存管理|B
+hard|表达式 {**{'a':1}, **{'b':2}} 的结果是？|报错|{'a':1,'b':2}|{'a':1}|{'b':2}|B
+hard|Python 中 itertools.chain([1,2],[3,4]) 的结果是？|[1,2,3,4]|迭代器依次产出1,2,3,4|[[1,2],[3,4]]|报错|B
+hard|以下哪个方法控制对象的打印表示（print 时）？|__repr__|__str__|__format__|__print__|B
+hard|Python 中 dataclass 装饰器的主要作用是？|自动生成 __init__/__repr__ 等样板代码|定义数据库表|数据校验|异步数据处理|A
+hard|表达式 list(zip([1,2],['a','b'])) 的结果是？|[(1,'a'),(2,'b')]|[1,2,'a','b']|[[1,'a'],[2,'b']]|报错|A
+hard|Python 中 super() 在多重继承中的调用顺序由什么决定？|定义顺序|MRO（方法解析顺序）|字母顺序|继承深度|B
+hard|以下哪个是 Python 中类型提示的正确写法（3.9+）？|list[int]|List[int]|list[int] 和 List[int] 都可以|int[]|C
+hard|Python 中 concurrent.futures.ThreadPoolExecutor 的 submit 方法返回什么？|直接返回结果|Future 对象|None|异常|B
+hard|表达式 __import__("math").sqrt(16) 的结果是？|4|报错|16|math.sqrt|B
+hard|Python 中 __all__ 变量的作用是？|定义所有变量|控制 from module import * 导出的名称|声明全局变量|列出内置函数|B
+hard|以下哪个是 Python 中 walrus 运算符（海象运算符）？|:=|==|=>|->|A
