@@ -1,35 +1,45 @@
 # ==============================================================================
-# Python 基础题库 (easy)
-# 格式：难度|题目|选项A|选项B|选项C|选项D|正确答案(A/B/C/D)
+# Python 题库 (easy)
+# 格式：难度|题目|选项A|选项B|选项C|选项D|正确答案(A/B/C/D)|ID
 # 以 # 开头为注释，空行忽略
 # ==============================================================================
-easy|Python 中以下哪个是合法的变量名？|2name|my-var|_count|class|C
-easy|Python 中 print(type(3.0)) 的输出是？|<class 'int'>|<class 'float'>|<class 'str'>|<class 'bool'>|B
-easy|以下哪个关键字用于定义函数？|function|def|func|define|B
-easy|Python 中列表 list 使用哪种括号？|{}|[]|()|<>|B
-easy|Python 中字典 dict 使用哪种括号？|{}|[]|()|<>|A
-easy|表达式 len("hello") 的结果是？|4|5|6|报错|B
-easy|以下哪个方法可以向列表末尾添加元素？|append()|add()|insert_end()|push()|A
-easy|Python 中用于捕获异常的关键字是？|try-catch|try-except|catch|try-handle|B
-easy|表达式 10 // 3 的结果是？|3.33|3|4|报错|B
-easy|表达式 2 ** 3 的结果是？|6|8|9|报错|B
-easy|以下哪个是 Python 的单行注释符号？|//|/* */|#|--|C
-easy|range(5) 生成的序列包含哪些数字？|1,2,3,4,5|0,1,2,3,4|0,1,2,3,4,5|1,2,3,4|B
-easy|以下哪个方法可以将字符串按分隔符拆分为列表？|split()|divide()|break()|slice()|A
-easy|Python 中 True 的类型是？|int|bool|str|float|B
-easy|表达式 "abc" * 2 的结果是？|报错|"abcabc"|"abc2"|"abccba"|B
-easy|以下哪个关键字用于定义类？|class|def|struct|type|A
-easy|以下哪个函数可以获取用户键盘输入？|input()|read()|get()|scan()|A
-easy|表达式 [1,2,3][-1] 的结果是？|1|2|3|报错|C
-easy|以下哪个方法可以移除列表最后一个元素并返回它？|remove()|pop()|del()|cut()|B
-easy|Python 中集合 set 的特点是？|元素有序可重复|元素无序不重复|元素有序不重复|元素无序可重复|B
-easy|表达式 isinstance(3, int) 的结果是？|True|False|3|报错|A
-easy|字典 d = {"a":1}，执行 d.get("b", 0) 的结果是？|报错|None|0|"b"|C
-easy|Python 中 __init__ 方法的作用是？|销毁对象|初始化对象属性|定义静态方法|继承父类|B
-easy|以下哪个关键字用于导入模块？|include|import|require|using|B
-easy|Python 中换行输出默认使用哪个参数控制？|end|sep|newline|break|A
-easy|表达式 "Hello".lower() 的结果是？|"HELLO"|"hello"|"Hello"|报错|B
-easy|以下哪个是 Python 的布尔值写法？|true|True|TRUE|boolean|B
-easy|列表 a = [1,2,3]，执行 a[1] = 5 后 a 是？|[1,2,3]|[1,5,3]|[5,2,3]|报错|B
-easy|Python 中多行字符串用什么符号？|三个单引号或三个双引号|两个双引号|分号|反斜杠|A
-easy|以下哪个函数可以求列表元素个数？|count()|len()|size()|length()|B
+easy|Python 中以下哪个是合法的变量名？|2name|my-var|_count|class|C|E001
+easy|Python 中 print(type(3.0)) 的输出是？|<class 'str'>|<class 'int'>|<class 'float'>|<class 'bool'>|C|E002
+easy|以下哪个关键字用于定义函数？|define|func|def|function|C|E003
+easy|Python 中列表 list 使用哪种括号？|()|<>|[]|{}|C|E004
+easy|Python 中字典 dict 使用哪种括号？|{}|[]|()|<>|A|E005
+easy|表达式 len("hello") 的结果是？|6|报错|4|5|D|E006
+easy|以下哪个方法可以向列表末尾添加元素？|append()|add()|insert_end()|push()|A|E007
+easy|Python 中用于捕获异常的关键字是？|catch|try-catch|try-handle|try-except|D|E008
+easy|表达式 10 // 3 的结果是？|3.33|4|报错|3|D|E009
+easy|表达式 2 ** 3 的结果是？|9|报错|6|8|D|E010
+easy|以下哪个是 Python 的单行注释符号？|//|/* */|#|--|C|E011
+easy|range(5) 生成的序列包含哪些数字？|0,1,2,3,4,5|1,2,3,4|1,2,3,4,5|0,1,2,3,4|D|E012
+easy|以下哪个方法可以将字符串按分隔符拆分为列表？|split()|divide()|break()|slice()|A|E013
+easy|Python 中 True 的类型是？|str|float|int|bool|D|E014
+easy|表达式 "abc" * 2 的结果是？|"abc2"|报错|"abccba"|"abcabc"|D|E015
+easy|以下哪个关键字用于定义类？|class|def|struct|type|A|E016
+easy|以下哪个函数可以获取用户键盘输入？|input()|read()|get()|scan()|A|E017
+easy|表达式 [1,2,3][-1] 的结果是？|1|2|3|报错|C|E018
+easy|以下哪个方法可以移除列表最后一个元素并返回它？|remove()|del()|cut()|pop()|D|E019
+easy|表达式 isinstance(3, int) 的结果是？|True|False|3|报错|A|E020
+easy|以下哪个关键字用于导入模块？|using|require|include|import|D|E021
+easy|表达式 "Hello".lower() 的结果是？|"HELLO"|"hello"|"Hello"|报错|B|E022
+easy|以下哪个是 Python 的布尔值写法？|true|True|TRUE|boolean|B|E023
+easy|列表 a = [1,2,3]，执行 a[1] = 5 后 a 是？|[1,2,3]|[1,5,3]|[5,2,3]|报错|B|E024
+easy|Python 中多行字符串用什么符号？|三个单引号或三个双引号|两个双引号|分号|反斜杠|A|E025
+easy|以下哪个函数可以求列表元素个数？|count()|len()|size()|length()|B|E026
+easy|open() 函数默认以什么模式打开文件？|读取模式 'r'|写入模式 'w'|追加模式 'a'|二进制模式 'b'|A|E027
+easy|以下哪个关键字用于手动抛出异常？|throw|raise|except|error|B|E028
+easy|从模块中导入特定函数的语法是？|import module.func|from module import func|include module.func|require module.func|B|E029
+easy|以下哪个方法可以判断字符串是否以指定前缀开头？|startwith()|beginswith()|startswith()|prefix()|C|E030
+easy|表达式 "hello".replace("l", "L") 的结果是？|"heLLo"|"hello"|"Hello"|"heLLo"|A|E031
+easy|以下哪个方法可以对列表进行原地排序？|sorted()|sort()|order()|arrange()|B|E032
+easy|删除字典中指定键的正确方法是？|dict.remove(key)|dict.delete(key)|del dict[key]|dict.pop(key, None) 和 del dict[key] 都可以|D|E033
+easy|表达式 int("3.14") 会发生什么？|返回 3|返回 3.14|抛出 ValueError|返回 0|C|E034
+easy|for 循环中 break 语句的作用是？|跳过当前迭代继续下一次|立即终止整个循环|暂停循环|重新开始循环|B|E035
+easy|以下哪个是 Python 的逻辑与运算符？|&&|and|&|AND|B|E036
+easy|函数中返回值使用哪个关键字？|return|yield|output|send|A|E037
+easy|以下哪个方法可以去除字符串左侧空白字符？|strip()|rstrip()|lstrip()|trim()|C|E038
+easy|表达式 abs(-5) 的结果是？|-5|5|0|报错|B|E039
+easy|以下哪个值在 Python 中被视为 False？|1|"0"|[]|"False"|C|E040

@@ -1,34 +1,45 @@
 # ==============================================================================
-# Python 中级题库 (medium)
-# 格式：难度|题目|选项A|选项B|选项C|选项D|正确答案(A/B/C/D)
+# Python 题库 (medium)
+# 格式：难度|题目|选项A|选项B|选项C|选项D|正确答案(A/B/C/D)|ID
+# 以 # 开头为注释，空行忽略
 # ==============================================================================
-medium|Python 中字符串不可变，以下哪个操作会报错？|s = "abc"; s = s + "d"|s = "abc"; s[0] = "x"|s = "abc"; s.upper()|s = "abc"; len(s)|B
-medium|以下哪个装饰器用于定义静态方法？|@staticmethod|@static|@classmethod|@static_method|A
-medium|Python 中 lambda 表达式的特点是？|可包含多条语句|匿名函数，只能一个表达式|必须命名|不能有参数|B
-medium|以下哪个模块用于正则表达式？|re|regex|regular|pattern|A
-medium|with open("file.txt") as f: 的主要好处是？|读取更快|自动关闭文件|支持二进制|加密文件|B
-medium|Python 中创建虚拟环境的命令是？|python -m venv env|python create env|python venv create|python env new|A
-medium|列表推导式 [x*2 for x in range(3)] 的结果是？|[0,1,2]|[0,2,4]|[2,4,6]|报错|B
-medium|以下哪个方法可以合并两个字典（Python 3.9+）？|dict1 + dict2|使用竖线运算符合并|dict1.merge(dict2)|merge(dict1,dict2)|B
-medium|Python 中 *args 的作用是？|接收任意数量关键字参数|接收任意数量位置参数|接收一个元组参数|接收一个字典参数|B
-medium|Python 中 **kwargs 的作用是？|接收任意数量位置参数|接收任意数量关键字参数|接收一个列表参数|接收一个集合参数|B
-medium|表达式 sorted([3,1,2], reverse=True) 的结果是？|[1,2,3]|[3,2,1]|[3,1,2]|报错|B
-medium|以下哪个是生成器表达式的写法？|[x for x in range(3)]|(x for x in range(3))|{x for x in range(3)}|<x for x in range(3)>|B
-medium|Python 中装饰器的本质是？|一个类|一个接收函数并返回函数的高阶函数|一个内置函数|一个语法错误|B
-medium|以下哪个方法可以将列表元素连接成字符串？|join()|concat()|merge()|combine()|A
-medium|Python 中深拷贝使用哪个函数？|copy.copy()|copy.deepcopy()|copy()|clone()|B
-medium|表达式 "a,b,c".split(",") 的结果是？|"abc"|['a','b','c']|['a,b,c']|报错|B
-medium|以下哪个关键字用于在函数中生成迭代器值？|return|yield|produce|emit|B
-medium|Python 中 type(None) 的输出是？|<class 'None'>|<class 'NoneType'>|None|<class 'null'>|B
-medium|字典 d = {"a":1,"b":2}，list(d.keys()) 的结果是？|['a','b']|[1,2]|[('a',1),('b',2)]|报错|A
-medium|以下哪个方法可以移除字符串首尾空白？|strip()|trim()|clean()|remove_space()|A
-medium|Python 中 == 和 is 的区别是？|没有区别|==比较值，is比较内存地址|==比较地址，is比较值|is只能比较数字|B
-medium|表达式 list(map(str, [1,2,3])) 的结果是？|[1,2,3]|['1','2','3']|'123'|报错|B
-medium|以下哪个是 Python 的包管理工具？|npm|pip|gem|apt|B
-medium|Python 中 if __name__ == "__main__" 的作用是？|定义主函数|脚本直接运行时执行该块|导入模块时执行该块|声明程序入口|B
-medium|异常处理中 else 子句在什么情况下执行？|发生异常时|没有发生异常时|无论是否异常都执行|finally 之后|B
-medium|以下哪个方法可以按索引插入元素到列表？|append()|insert()|add()|put()|B
-medium|Python 中全局变量在函数内修改需要什么关键字？|global|static|extern|public|A
-medium|表达式 {x: x**2 for x in range(3)} 的结果是？|{0:0,1:1,2:4}|[0,1,4]|{0,1,4}|报错|A
-medium|以下哪个模块用于处理 JSON 数据？|json|csv|xml|yaml|A
-medium|Python 中 os.path.join("a","b") 的结果（Windows）？|a/b|a\b|a+b|ab|B
+medium|Python 中字符串不可变，以下哪个操作会报错？|s = "abc"; s = s + "d"|s = "abc"; s.upper()|s = "abc"; s[0] = "x"|s = "abc"; len(s)|C|M001
+medium|以下哪个装饰器用于定义静态方法？|@classmethod|@static_method|@staticmethod|@static|C|M002
+medium|Python 中 lambda 表达式的特点是？|可包含多条语句|必须命名|匿名函数，只能一个表达式|不能有参数|C|M003
+medium|以下哪个模块用于正则表达式？|re|regex|regular|pattern|A|M004
+medium|with open("file.txt") as f: 的主要好处是？|读取更快|加密文件|自动关闭文件|支持二进制|C|M005
+medium|Python 中创建虚拟环境的命令是？|python -m venv env|python create env|python venv create|python env new|A|M006
+medium|列表推导式 [x*2 for x in range(3)] 的结果是？|[2,4,6]|报错|[0,2,4]|[0,1,2]|C|M007
+medium|以下哪个方法可以合并两个字典（Python 3.9+）？|merge(dict1,dict2)|dict1 + dict2|使用竖线运算符合并|dict1.merge(dict2)|C|M008
+medium|Python 中 *args 的作用是？|接收一个字典参数|接收一个元组参数|接收任意数量位置参数|接收任意数量关键字参数|C|M009
+medium|Python 中 **kwargs 的作用是？|接收一个集合参数|接收一个列表参数|接收任意数量关键字参数|接收任意数量位置参数|C|M010
+medium|表达式 sorted([3,1,2], reverse=True) 的结果是？|[1,2,3]|报错|[3,2,1]|[3,1,2]|C|M011
+medium|以下哪个是生成器表达式的写法？|<x for x in range(3)>|{x for x in range(3)}|[x for x in range(3)]|(x for x in range(3))|D|M012
+medium|Python 中装饰器的本质是？|一个内置函数|一个类|一个语法错误|一个接收函数并返回函数的高阶函数|D|M013
+medium|以下哪个方法可以将列表元素连接成字符串？|join()|concat()|merge()|combine()|A|M014
+medium|Python 中深拷贝使用哪个函数？|clone()|copy.copy()|copy()|copy.deepcopy()|D|M015
+medium|表达式 "a,b,c".split(",") 的结果是？|"abc"|['a,b,c']|报错|['a','b','c']|D|M016
+medium|以下哪个关键字用于在函数中生成迭代器值？|return|produce|emit|yield|D|M017
+medium|Python 中 type(None) 的输出是？|None|<class 'None'>|<class 'null'>|<class 'NoneType'>|D|M018
+medium|字典 d = {"a":1,"b":2}，list(d.keys()) 的结果是？|['a','b']|[1,2]|[('a',1),('b',2)]|报错|A|M019
+medium|以下哪个方法可以移除字符串首尾空白？|strip()|trim()|clean()|remove_space()|A|M020
+medium|Python 中 == 和 is 的区别是？|==比较地址，is比较值|没有区别|is只能比较数字|==比较值，is比较内存地址|D|M021
+medium|表达式 list(map(str, [1,2,3])) 的结果是？|'123'|报错|[1,2,3]|['1','2','3']|D|M022
+medium|以下哪个是 Python 的包管理工具？|apt|npm|gem|pip|D|M023
+medium|Python 中 if __name__ == "__main__" 的作用是？|导入模块时执行该块|声明程序入口|定义主函数|脚本直接运行时执行该块|D|M024
+medium|异常处理中 else 子句在什么情况下执行？|发生异常时|没有发生异常时|无论是否异常都执行|finally 之后|B|M025
+medium|以下哪个方法可以按索引插入元素到列表？|append()|insert()|add()|put()|B|M026
+medium|Python 中全局变量在函数内修改需要什么关键字？|global|static|extern|public|A|M027
+medium|表达式 {x: x**2 for x in range(3)} 的结果是？|{0:0,1:1,2:4}|[0,1,4]|{0,1,4}|报错|A|M028
+medium|以下哪个模块用于处理 JSON 数据？|json|csv|xml|yaml|A|M029
+medium|Python 中 os.path.join("a","b") 的结果（Windows）？|a/b|a\b|a+b|ab|B|M030
+medium|Python 中集合 set 的特点是？|元素有序可重复|元素无序不重复|元素有序不重复|元素无序可重复|B|M031
+medium|字典 d = {"a":1}，执行 d.get("b", 0) 的结果是？|报错|None|0|"b"|C|M032
+medium|Python 中 __init__ 方法的作用是？|销毁对象|初始化对象属性|定义静态方法|继承父类|B|M033
+medium|Python 中换行输出默认使用哪个参数控制？|end|sep|newline|break|A|M034
+medium|表达式 (lambda x: x**2)(5) 的结果是？|10|25|5|报错|B|M035
+medium|表达式 [x for x in range(10) if x % 2 == 0] 的结果是？|[0,2,4,6,8]|[1,3,5,7,9]|[0,1,2,3,4,5,6,7,8,9]|报错|A|M036
+medium|表达式 {**{'a':1}, **{'b':2}} 的结果是？|报错|{'a':1,'b':2}|{'a':1}|{'b':2}|B|M037
+medium|with 语句在文件操作中的主要作用是？|提高读取速度|自动关闭文件，即使发生异常|加密文件内容|支持大文件读取|B|M038
+medium|多个 except 子句的异常匹配顺序是？|从下到上匹配|从上到下匹配，第一个匹配的执行|同时匹配所有|随机匹配|B|M039
+medium|sys.path 变量的作用是？|存储系统环境变量|模块搜索路径列表|当前工作目录|Python 安装路径|B|M040

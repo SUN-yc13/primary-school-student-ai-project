@@ -13,13 +13,37 @@
 
 import os
 import sys
-import glob
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 QUESTIONS_DIR = os.path.join(BASE_DIR, "questions")
 
 DIFFICULTIES = {"1": "easy", "2": "medium", "3": "hard"}
 DIFF_LABELS = {"easy": "简单", "medium": "中等", "hard": "困难"}
+ID_PREFIX = {"easy": "E", "medium": "M", "hard": "H"}
+
+
+def get_next_id(target_file, difficulty):
+    """基于目标文件已有最大ID+1生成新ID。"""
+    prefix = ID_PREFIX.get(difficulty, "Q")
+    max_num = 0
+    filepath = os.path.join(QUESTIONS_DIR, target_file)
+    if os.path.isfile(filepath):
+        with open(filepath, "r", encoding="utf-8") as f:
+            for raw in f:
+                line = raw.strip()
+                if not line or line.startswith("#"):
+                    continue
+                parts = line.split("|")
+                if len(parts) >= 8:
+                    qid = parts[7].strip()
+                    if qid.startswith(prefix):
+                        try:
+                            num = int(qid[1:])
+                            if num > max_num:
+                                max_num = num
+                        except ValueError:
+                            pass
+    return f"{prefix}{max_num + 1:03d}"
 
 
 def ensure_dir():
@@ -32,11 +56,14 @@ def list_files():
     return sorted(f for f in os.listdir(QUESTIONS_DIR) if f.endswith(".txt"))
 
 
-def validate_line(line):
-    """校验一行题目（7字段：难度|题|A|B|C|D|答案）。"""
+def validate_line(line, target_file=None):
+    """校验一行题目。
+    支持8字段（含ID）；如果只有7字段，自动生成ID（基于目标文件已有最大ID+1）。
+    校验难度、答案、题目非空。
+    返回 (ok, result_line)。"""
     parts = [p.strip() for p in line.split("|")]
-    if len(parts) != 7:
-        return False, f"需要7个字段（难度|题|A|B|C|D|答案），实际{len(parts)}个"
+    if len(parts) not in (7, 8):
+        return False, f"需要7或8个字段（难度|题|A|B|C|D|答案[|ID]），实际{len(parts)}个"
     if parts[0] not in ("easy", "medium", "hard"):
         return False, f"难度必须是 easy/medium/hard，当前是 '{parts[0]}'"
     if parts[6].upper() not in ("A", "B", "C", "D"):
@@ -44,6 +71,13 @@ def validate_line(line):
     if not parts[1]:
         return False, "题目内容不能为空"
     parts[6] = parts[6].upper()
+    # 处理ID
+    if len(parts) == 7:
+        if target_file:
+            qid = get_next_id(target_file, parts[0])
+        else:
+            qid = f"{ID_PREFIX.get(parts[0], 'Q')}001"
+        parts.append(qid)
     return True, "|".join(parts)
 
 
@@ -69,7 +103,7 @@ def add_single(target_file):
         print("答案无效，已取消。")
         return
     line = f"{diff}|{q}|{opts['A']}|{opts['B']}|{opts['C']}|{opts['D']}|{ans}"
-    ok, result = validate_line(line)
+    ok, result = validate_line(line, target_file)
     if not ok:
         print(f"校验失败：{result}")
         return
@@ -83,6 +117,18 @@ def batch_import(source_path, target_file):
     if not os.path.isfile(source_path):
         print(f"[错误] 源文件不存在：{source_path}")
         return
+    # 文件大小检查（>10MB拒绝）
+    file_size = os.path.getsize(source_path)
+    if file_size > 10 * 1024 * 1024:
+        print(f"[错误] 文件过大（{file_size / 1024 / 1024:.1f}MB），超过10MB限制，请拆分后导入。")
+        return
+    # UTF-8编码检测（试读1024字节）
+    try:
+        with open(source_path, "r", encoding="utf-8") as f:
+            f.read(1024)
+    except UnicodeDecodeError:
+        print(f"[错误] 文件不是 UTF-8 编码，请先转换为 UTF-8 编码后再导入。")
+        return
     ensure_dir()
     filepath = os.path.join(QUESTIONS_DIR, target_file)
     added = skipped = 0
@@ -92,7 +138,7 @@ def batch_import(source_path, target_file):
             line = raw.strip()
             if not line or line.startswith("#"):
                 continue
-            ok, result = validate_line(line)
+            ok, result = validate_line(line, target_file)
             if not ok:
                 print(f"[跳过] 第{i}行：{result}")
                 skipped += 1
@@ -109,30 +155,39 @@ def show_stats():
         return
     total = 0
     by_diff = {"easy": 0, "medium": 0, "hard": 0}
-    print("\n" + "=" * 50)
-    print(f"{'题库文件':<25}{'简单':<6}{'中等':<6}{'困难':<6}{'合计'}")
-    print("-" * 50)
+    total_answers = {"A": 0, "B": 0, "C": 0, "D": 0}
+    print("\n" + "=" * 70)
+    print(f"{'题库文件':<22}{'题数':<6}{'A':<5}{'B':<5}{'C':<5}{'D':<5}{'简单':<5}{'中等':<5}{'困难'}")
+    print("-" * 70)
     for fname in files:
         f_total = 0
         f_diff = {"easy": 0, "medium": 0, "hard": 0}
+        f_answers = {"A": 0, "B": 0, "C": 0, "D": 0}
         with open(os.path.join(QUESTIONS_DIR, fname), "r", encoding="utf-8") as f:
             for raw in f:
                 line = raw.strip()
                 if not line or line.startswith("#"):
                     continue
                 parts = line.split("|")
-                if len(parts) == 7 and parts[0] in f_diff:
+                if len(parts) in (7, 8) and parts[0] in f_diff:
                     f_diff[parts[0]] += 1
                     f_total += 1
-        print(f"{fname:<25}{f_diff['easy']:<6}{f_diff['medium']:<6}"
-              f"{f_diff['hard']:<6}{f_total}")
+                    ans = parts[6].strip().upper()
+                    if ans in f_answers:
+                        f_answers[ans] += 1
+        print(f"{fname:<22}{f_total:<6}{f_answers['A']:<5}{f_answers['B']:<5}"
+              f"{f_answers['C']:<5}{f_answers['D']:<5}"
+              f"{f_diff['easy']:<5}{f_diff['medium']:<5}{f_diff['hard']}")
         total += f_total
         for k in by_diff:
             by_diff[k] += f_diff[k]
-    print("-" * 50)
-    print(f"{'总计':<25}{by_diff['easy']:<6}{by_diff['medium']:<6}"
-          f"{by_diff['hard']:<6}{total}")
-    print("=" * 50)
+        for k in total_answers:
+            total_answers[k] += f_answers[k]
+    print("-" * 70)
+    print(f"{'总计':<22}{total:<6}{total_answers['A']:<5}{total_answers['B']:<5}"
+          f"{total_answers['C']:<5}{total_answers['D']:<5}"
+          f"{by_diff['easy']:<5}{by_diff['medium']:<5}{by_diff['hard']}")
+    print("=" * 70)
 
 
 def select_target():

@@ -141,7 +141,7 @@ QUIZ_OPTIONS = [3, 5, 20, 50, 100]  # 按需增减
 1. 修改代码并测试
 2. 更新 `VERSION` 文件
 3. 在 `docs/CHANGELOG.md` 顶部添加新版本条目
-4. 更新 `README.md` 中的版本号和日期
+4. 更新 `docs/README.md` 中的版本号和日期
 5. Git 提交并打 tag：
    ```bash
    git add -A

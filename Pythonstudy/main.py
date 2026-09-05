@@ -10,10 +10,11 @@ Python 考试系统 - 主程序 v2.0
 """
 
 import os
-import sys
 import json
+import time
 import random
 import glob
+import shutil
 from datetime import datetime
 
 # ── 路径配置 ──────────────────────────────────────────────────────────────────
@@ -54,8 +55,15 @@ def load_json(filepath, default):
 
 def save_json(filepath, data):
     ensure_data_dir()
-    with open(filepath, "w", encoding="utf-8") as f:
+    tmp_path = filepath + ".tmp"
+    with open(tmp_path, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
+    # 如果原文件存在，先备份
+    if os.path.isfile(filepath):
+        bak_path = filepath + ".bak"
+        shutil.copy2(filepath, bak_path)
+    # 原子替换
+    os.replace(tmp_path, filepath)
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -85,10 +93,10 @@ def load_questions(questions_dir, difficulty_filter="all"):
                     if not line or line.startswith("#"):
                         continue
                     parts = [p.strip() for p in line.split("|")]
-                    if len(parts) != 7:
-                        print(f"[警告] {filename} 第{line_no}行字段数错误（需7个），已跳过")
+                    if len(parts) != 8:
+                        print(f"[警告] {filename} 第{line_no}行字段数错误（需8个），已跳过")
                         continue
-                    diff, q_text, a, b, c, d, answer = parts
+                    diff, q_text, a, b, c, d, answer, qid = parts
                     answer = answer.upper()
                     if answer not in ("A", "B", "C", "D"):
                         print(f"[警告] {filename} 第{line_no}行答案无效，已跳过")
@@ -100,6 +108,7 @@ def load_questions(questions_dir, difficulty_filter="all"):
                         "question": q_text,
                         "options": {"A": a, "B": b, "C": c, "D": d},
                         "answer": answer,
+                        "id": qid,
                         "source": filename,
                     })
         except Exception as e:
@@ -114,6 +123,7 @@ def question_to_dict(q):
         "question": q["question"],
         "options": q["options"],
         "answer": q["answer"],
+        "id": q.get("id", ""),
         "source": q["source"],
     }
 
@@ -133,8 +143,9 @@ def save_wrong_questions(wrong_list):
 def add_to_wrong_book(question):
     """把答错的题加入错题本，重复题目累计错误次数。"""
     wrong_list = load_wrong_questions()
+    qid = question.get("id", "")
     for item in wrong_list:
-        if item["question"] == question["question"]:
+        if item.get("id", "") == qid and qid:
             item["wrong_count"] = item.get("wrong_count", 1) + 1
             item["last_wrong_date"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             save_wrong_questions(wrong_list)
@@ -165,10 +176,10 @@ def save_history(history):
     save_json(HISTORY_FILE, history)
 
 
-def add_history_record(count, difficulty_label, score, total, wrong_count):
+def add_history_record(count, difficulty_label, score, total, wrong_count, duration_seconds=0):
     history = load_history()
     record = {
-        "id": len(history) + 1,
+        "id": int(time.time() * 1000),
         "date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "question_count": count,
         "difficulty": difficulty_label,
@@ -176,6 +187,7 @@ def add_history_record(count, difficulty_label, score, total, wrong_count):
         "total": total,
         "percent": round(score / total * 100, 1) if total > 0 else 0,
         "wrong_count": wrong_count,
+        "duration_seconds": duration_seconds,
     }
     history.append(record)
     save_history(history)
@@ -207,7 +219,8 @@ def ask_question(idx, total, q, is_review=False):
 
 
 def run_quiz(selected, is_review=False):
-    """执行一轮答题，返回 (score, answered, wrong_questions_list)。"""
+    """执行一轮答题，返回 (score, answered, wrong_questions_list, duration_seconds)。"""
+    start_time = time.time()
     score = 0
     wrong_list = []
     total = len(selected)
@@ -215,7 +228,8 @@ def run_quiz(selected, is_review=False):
         user_ans, quit_flag = ask_question(idx, total, q, is_review)
         if quit_flag:
             print(f"\n提前交卷。当前得分：{score}/{idx - 1}")
-            return score, idx - 1, wrong_list
+            duration = int(time.time() - start_time)
+            return score, idx - 1, wrong_list, duration
 
         if user_ans == q["answer"]:
             print("回答正确！")
@@ -227,10 +241,11 @@ def run_quiz(selected, is_review=False):
             wrong_list.append(q)
             if not is_review:
                 add_to_wrong_book(q)
-    return score, total, wrong_list
+    duration = int(time.time() - start_time)
+    return score, total, wrong_list, duration
 
 
-def show_result(score, total):
+def show_result(score, total, duration=0):
     print("\n" + "=" * 56)
     print(f"考试完成！答对 {score}/{total} 题")
     if total > 0:
@@ -244,15 +259,33 @@ def show_result(score, total):
             print("评级：及格")
         else:
             print("评级：不及格，继续加油！")
+    if duration >= 0:
+        minutes = duration // 60
+        seconds = duration % 60
+        print(f"用时：{minutes}分{seconds}秒")
+        if total > 0:
+            avg = duration / total
+            print(f"平均每题用时：{avg:.1f}秒")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
 #  菜单与交互
 # ══════════════════════════════════════════════════════════════════════════════
 
+def get_version():
+    """读取 VERSION 文件内容，失败则返回默认版本号。"""
+    version_file = os.path.join(BASE_DIR, "VERSION")
+    try:
+        with open(version_file, "r", encoding="utf-8") as f:
+            return f.read().strip()
+    except (IOError, OSError):
+        return "2.1.0"
+
+
 def print_main_menu():
+    version = get_version()
     print("\n" + "=" * 56)
-    print("           Python 考试系统  v2.0")
+    print(f"           Python 考试系统  v{version}")
     print("=" * 56)
     print("  1. 开始考试")
     print("  2. 错题回顾")
@@ -308,11 +341,16 @@ def mode_start_exam():
     if count is None:
         return
 
+    # 题库不足保护
+    if count > len(all_questions):
+        print(f"[提示] 需要 {count} 道题，但当前题库仅有 {len(all_questions)} 道，无法开始考试。")
+        return None
+
     selected = random.sample(all_questions, count)
     print(f"\n开始考试！共 {count} 道题（{diff_label}），祝你好运。")
-    score, answered, wrong_list = run_quiz(selected, is_review=False)
-    show_result(score, answered)
-    add_history_record(count, diff_label, score, answered, len(wrong_list))
+    score, answered, wrong_list, duration = run_quiz(selected, is_review=False)
+    show_result(score, answered, duration)
+    add_history_record(count, diff_label, score, answered, len(wrong_list), duration)
     print(f"本次错题 {len(wrong_list)} 道已自动加入错题本。")
 
 
@@ -329,8 +367,8 @@ def mode_review_wrong():
     # 转回统一格式
     selected = [dict(q) for q in selected]
     print(f"\n开始错题回顾！共 {count} 道题，答对后自动从错题本移除。")
-    score, answered, _ = run_quiz(selected, is_review=True)
-    show_result(score, answered)
+    score, answered, _, duration = run_quiz(selected, is_review=True)
+    show_result(score, answered, duration)
 
 
 def mode_show_history():
@@ -338,18 +376,24 @@ def mode_show_history():
     if not history:
         print("\n暂无考试记录。")
         return
-    print("\n" + "=" * 56)
-    print(f"{'序号':<4}{'日期':<20}{'难度':<8}{'题量':<6}{'得分':<8}{'正确率':<8}{'错题数'}")
-    print("-" * 56)
-    for r in history:
-        print(f"{r['id']:<4}{r['date']:<20}{r['difficulty']:<8}"
+    print("\n" + "=" * 64)
+    print(f"{'序号':<4}{'日期':<20}{'难度':<8}{'题量':<6}{'得分':<8}{'正确率':<8}{'用时':<8}{'错题数'}")
+    print("-" * 64)
+    for idx, r in enumerate(history, 1):
+        dur = r.get("duration_seconds", 0)
+        if dur >= 60:
+            dur_str = f"{dur//60}分{dur%60}秒"
+        else:
+            dur_str = f"{dur}秒"
+        print(f"{idx:<4}{r['date']:<20}{r['difficulty']:<8}"
               f"{r['question_count']:<6}{r['score']}/{r['total']:<5}"
-              f"{r['percent']}%{'':<3}{r['wrong_count']}")
-    print("=" * 56)
+              f"{r['percent']}%{'':<3}{dur_str:<8}{r['wrong_count']}")
+    print("=" * 64)
     # 统计
     if history:
         avg = sum(r["percent"] for r in history) / len(history)
-        print(f"共考试 {len(history)} 次，平均正确率 {avg:.1f}%")
+        total_time = sum(r.get("duration_seconds", 0) for r in history)
+        print(f"共考试 {len(history)} 次，平均正确率 {avg:.1f}%，累计用时 {total_time//60}分{total_time%60}秒")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
